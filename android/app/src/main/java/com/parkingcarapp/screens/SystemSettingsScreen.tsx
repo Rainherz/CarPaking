@@ -150,28 +150,6 @@ export default function SystemSettingsScreen({ onBack }: SystemSettingsScreenPro
     );
   };
 
-  const handleResetDefaults = () => {
-    Alert.alert(
-      "Restaurar Configuración",
-      "¿Estás seguro de que quieres restaurar todos los valores por defecto? Esta acción no se puede deshacer.",
-      [
-        { text: "Cancelar", style: "cancel" },
-        { text: "Restaurar", style: "destructive", onPress: async () => {
-          try {
-            // Eliminar todas las configuraciones
-            await databaseService.db?.executeSql('DELETE FROM app_settings');
-            // Reinsertar valores por defecto
-            await databaseService.insertDefaultSettings();
-            // Recargar configuraciones
-            await loadSettings();
-            Alert.alert("Éxito", "Configuración restaurada a valores por defecto");
-          } catch (error) {
-            Alert.alert("Error", "No se pudo restaurar la configuración");
-          }
-        }},
-      ]
-    );
-  };
 
   const sectionButtons = [
     { key: "tariffs", title: "Tarifas", icon: "attach-money" },
@@ -278,11 +256,6 @@ export default function SystemSettingsScreen({ onBack }: SystemSettingsScreenPro
             </ThemedText>
           </TouchableOpacity>
 
-          <TouchableOpacity style={[styles.button, styles.buttonDanger]} onPress={handleResetDefaults}>
-            <ThemedText style={styles.buttonText}>
-              <MaterialIcons name="restore" size={16} color="#fff" /> Restaurar Valores por Defecto
-            </ThemedText>
-          </TouchableOpacity>
         </ThemedView>
 
         {/* Información del Sistema - DATOS REALES */}

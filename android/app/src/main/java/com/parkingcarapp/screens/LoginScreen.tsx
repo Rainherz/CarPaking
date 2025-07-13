@@ -50,11 +50,7 @@ export default function LoginScreen({ onLoginSuccess }: LoginScreenProps) {
   return (
     <View style={styles.container}>
       <ThemedText type="title" style={styles.title}>Iniciar Sesión</ThemedText>
-      <ThemedText style={styles.hint}>
-        Usuarios de prueba:{'\n'}
-        admin / admin123{'\n'}
-        operador / operador123
-      </ThemedText>
+      
       <TextInput
         style={styles.input}
         placeholder="Usuario"

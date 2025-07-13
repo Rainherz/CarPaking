@@ -40,8 +40,12 @@ export default function OperatorsManagementScreen({ onBack }: OperatorsManagemen
     try {
       setIsLoading(true);
       const ops = await databaseService.getOperators();
-      // Filtrar la opción "all" que se usa en reportes
-      const validOperators = ops.filter((op: any) => op.id !== "all");
+      const validOperators = ops
+        .filter((op: any) => op.id !== "all")
+        .map((op: any) => ({
+          ...op,
+          lastLogin: op.lastLogin === null ? undefined : op.lastLogin,
+        }));
       setOperators(validOperators);
     } catch (error) {
       console.error('Error cargando operadores:', error);

@@ -6,7 +6,6 @@ import OperatorClock from "../components/operator/OperatorClock";
 import OperatorQuickActions from "../components/operator/OperatorQuickActions";
 import OperatorStats from "../components/operator/OperatorStats";
 import OperatorActiveVehicles from "../components/operator/OperatorActiveVehicles";
-import OperatorSecondaryActions from "../components/operator/OperatorSecondaryActions";
 import OperatorLogoutButton from "../components/operator/OperatorLogoutButton";
 import OperatorModals from "../components/operator/OperatorModals";
 import { useParkingData } from "../hooks/useParkingData";
@@ -128,13 +127,6 @@ export default function OperatorScreen({ onLogout, currentUser }: OperatorScreen
           onExit={handleProcessExit}
         />
         
-        <OperatorSecondaryActions
-          onReport={handleViewReports}
-          onConfig={handleSettings}
-          onTestTicket={testTicketSystem}
-          onTestOCR={testOCRFunctionality}
-          isTestingOCR={isTestingOCR}
-        />
       </ScrollView>
 
       <OperatorModals

@@ -1,5 +1,5 @@
 // src/components/PlateCamera.tsx
-import React, { useEffect, useRef, useState } from 'react';
+import React, { use, useEffect, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -12,11 +12,10 @@ import {
 } from 'react-native';
 import {
   Camera,
-  useCameraDevices,
+  useCameraDevice,
+  useCameraPermission
 } from 'react-native-vision-camera';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { CameraPermissionRequestResult } from 'react-native-vision-camera';
-
 
 interface PlateCameraProps {
   visible: boolean;
@@ -32,10 +31,10 @@ const GUIDE_HEIGHT = GUIDE_WIDTH * 0.45; // Proporción 2.2:1 típica
 
 export default function PlateCamera({ visible, onCapture, onClose }: PlateCameraProps) {
   const camera = useRef<Camera>(null);
-  const devices = useCameraDevices(); // API actualizada
-  const device = devices.back;
+  const device = useCameraDevice('back');
 
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
+  const [hasPermissionState, setHasPermissionState] = useState<boolean | null>(null);
   const [isCapturing, setIsCapturing] = useState(false);
   const [flashMode, setFlashMode] = useState<'off' | 'on' | 'auto'>('off');
   const [focusPoint, setFocusPoint] = useState<{ x: number; y: number } | null>(null);
@@ -50,9 +49,9 @@ export default function PlateCamera({ visible, onCapture, onClose }: PlateCamera
   const requestCameraPermission = async () => {
     try {
       const permission = await Camera.requestCameraPermission();
-      setHasPermission(permission === 'authorized'); // API corregida
+      setHasPermission(permission === 'granted'); // API corregida
 
-      if (permission !== 'authorized') {
+      if (permission !== 'granted') {
         Alert.alert(
           'Permisos de Cámara',
           'Esta aplicación necesita acceso a la cámara para detectar placas vehiculares.',

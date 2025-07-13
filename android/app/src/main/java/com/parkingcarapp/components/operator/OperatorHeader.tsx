@@ -3,6 +3,7 @@ import { ThemedView } from "../common/ThemedView";
 import { ThemedText } from "../common/ThemedText";
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { operatorStyles as styles } from "../../styles/OperatorScreen.styles";
+import { View } from "react-native";
 
 type OperatorHeaderProps = {
   onRefresh: () => void;
