@@ -1,8 +1,7 @@
 import React from "react";
-import { ScrollView, TouchableOpacity } from "react-native";
+import { ScrollView, Text, TouchableOpacity } from "react-native";
 import { ThemedView } from "../common/ThemedView";
 import { ThemedText } from "../common/ThemedText";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { adminSharedStyles as styles } from "../../styles/AdminShared.styles";
 
 type Operator = {
@@ -38,7 +37,6 @@ export default function OperatorsList({
 
       {operators.length === 0 ? (
         <ThemedView style={styles.emptyState}>
-          <MaterialIcons name="people" size={48} color="#ccc" />
           <ThemedText style={styles.emptyText}>
             No hay operadores registrados
           </ThemedText>
@@ -54,24 +52,16 @@ export default function OperatorsList({
                     <ThemedText style={{ color: "#FF6B35", fontSize: 12 }}> (Inactivo)</ThemedText>
                   )}
                 </ThemedText>
-                <ThemedText style={styles.listItemSubtitle}>
-                  Usuario: {operator.username}
-                  {operator.email && ` • Email: ${operator.email}`}
-                </ThemedText>
+                
                 {operator.phone && (
                   <ThemedText style={styles.listItemSubtitle}>
                     Teléfono: {operator.phone}
                   </ThemedText>
                 )}
                 <ThemedText style={styles.listItemSubtitle}>
-                  Vehículos procesados: {operator.totalVehiclesProcessed || 0} •
-                  Ingresos: S/ {(operator.totalEarnings || 0).toFixed(2)}
+                  Vehículos procesados: {operator.totalVehiclesProcessed || 0} 
                 </ThemedText>
-                {operator.lastLogin && (
-                  <ThemedText style={styles.listItemSubtitle}>
-                    Último acceso: {operator.lastLogin}
-                  </ThemedText>
-                )}
+                
               </ThemedView>
 
               <ThemedView style={styles.listItemActions}>
@@ -80,25 +70,23 @@ export default function OperatorsList({
                   onPress={() => onViewStats(operator)}
                   disabled={false}
                 >
-                  <MaterialIcons name="bar-chart" size={20} color="#1976D2" />
+                  <Text style={{ fontSize: 12}}> 📈</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
                   style={styles.actionButton}
                   onPress={() => onEdit(operator)}
                 >
-                  <MaterialIcons name="edit" size={20} color="#2E7D32" />
+                  <Text style={{ fontSize: 12 }}> ✏️</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
                   style={styles.actionButton}
                   onPress={() => onToggleStatus(operator.id)}
                 >
-                  <MaterialIcons
-                    name={operator.isActive ? "visibility-off" : "visibility"}
-                    size={20}
-                    color={operator.isActive ? "#FF6B35" : "#4CAF50"}
-                  />
+                  <Text style={{ fontSize: 12 }}>
+                    {operator.isActive ? "❌" : "✅"}
+                  </Text>
                 </TouchableOpacity>
               </ThemedView>
             </ThemedView>

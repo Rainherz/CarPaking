@@ -6,13 +6,13 @@ import {
     Modal,
     ScrollView,
     StyleSheet,
+    Text,
     TouchableOpacity
 } from 'react-native';
 
 import { ticketService } from '../services/ticketService';
 import { ThemedView } from './common/ThemedView';
 import { ThemedText } from './common/ThemedText';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 interface VehicleExit {
   plateNumber: string;
@@ -151,7 +151,7 @@ export default function TicketPreview({
             Ticket de Salida
           </ThemedText>
           <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-            <MaterialIcons name="close" size={24} color="#666" />
+            <Text style={{ fontSize: 15 }}> ❌ </Text>
           </TouchableOpacity>
         </ThemedView>
 
@@ -272,11 +272,10 @@ export default function TicketPreview({
                 {isPrinting ? (
                   <ActivityIndicator color="#fff" size="small" />
                 ) : (
-                  <MaterialIcons name="print" size={24} color="#fff" />
+                  <ThemedText style={styles.actionButtonText}>
+                    {isPrinting ? 'Imprimiendo...' : 'Imprimir'}
+                  </ThemedText>
                 )}
-                <ThemedText style={styles.actionButtonText}>
-                  {isPrinting ? 'Imprimiendo...' : 'Imprimir'}
-                </ThemedText>
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -287,11 +286,10 @@ export default function TicketPreview({
                 {isSharing ? (
                   <ActivityIndicator color="#fff" size="small" />
                 ) : (
-                  <MaterialIcons name="share" size={24} color="#fff" />
+                  <ThemedText style={styles.actionButtonText}>
+                    {isSharing ? 'Compartiendo...' : 'Compartir'}
+                  </ThemedText>
                 )}
-                <ThemedText style={styles.actionButtonText}>
-                  {isSharing ? 'Compartiendo...' : 'Compartir'}
-                </ThemedText>
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -299,7 +297,6 @@ export default function TicketPreview({
                 onPress={() => handleShare('text')}
                 disabled={isSharing}
               >
-                <MaterialIcons name="content-copy" size={24} color="#666" />
                 <ThemedText style={[styles.actionButtonText, { color: '#666' }]}>
                   Texto
                 </ThemedText>
@@ -308,7 +305,6 @@ export default function TicketPreview({
           </>
         ) : (
           <ThemedView style={styles.errorContainer}>
-            <MaterialIcons name="error" size={64} color="#f44336" />
             <ThemedText style={styles.errorText}>
               No se pudo cargar la información del ticket
             </ThemedText>

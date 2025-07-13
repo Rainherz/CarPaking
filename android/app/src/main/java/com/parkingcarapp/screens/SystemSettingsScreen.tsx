@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { ScrollView, TouchableOpacity, Alert, View } from "react-native";
+import { ScrollView, TouchableOpacity, Alert, View, Text } from "react-native";
 import { ThemedView } from "../components/common/ThemedView";
 import { ThemedText } from "../components/common/ThemedText";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import AdminScreenHeader from "../components/admin/AdminScreenHeader";
 import { TariffsSection, BusinessInfoSection, SystemConfigSection } from "../components/admin/SystemSettingsSections";
 import { adminSharedStyles as styles } from "../styles/AdminShared.styles";
@@ -167,7 +166,6 @@ export default function SystemSettingsScreen({ onBack }: SystemSettingsScreenPro
           onBack={onBack}
         />
         <ThemedView style={[styles.card, { margin: 16, alignItems: 'center', paddingVertical: 40 }]}>
-          <MaterialIcons name="settings" size={48} color="#ccc" />
           <ThemedText style={{ color: '#999', marginTop: 12 }}>Cargando configuraciones...</ThemedText>
         </ThemedView>
       </ThemedView>
@@ -188,7 +186,7 @@ export default function SystemSettingsScreen({ onBack }: SystemSettingsScreenPro
         {/* Botones de Navegación de Secciones */}
         <ThemedView style={styles.card}>
           <ThemedText style={styles.sectionTitle}>
-            <MaterialIcons name="tune" size={18} color="#333" /> Secciones de Configuración
+             Secciones de Configuración
           </ThemedText>
           <View style={{ flexDirection: "row", justifyContent: "space-between", gap: 8 }}>
             {sectionButtons.map((section) => (
@@ -202,12 +200,13 @@ export default function SystemSettingsScreen({ onBack }: SystemSettingsScreenPro
                 ]}
                 onPress={() => setActiveSection(section.key as any)}
               >
-                <MaterialIcons 
-                  name={section.icon} 
-                  size={20} 
-                  color="#fff" 
-                  style={{ marginBottom: 4 }}
-                />
+                <Text style={{ fontSize: 20, marginBottom: 4 }}>
+                  {section.key === "tariffs" && "💰"}
+                  {section.key === "business" && "🏢"}
+                  {section.key === "system" && "⚙️"}
+                </Text>
+
+          
                 <ThemedText style={[styles.buttonText, { fontSize: 12 }]}>
                   {section.title}
                 </ThemedText>
@@ -220,7 +219,7 @@ export default function SystemSettingsScreen({ onBack }: SystemSettingsScreenPro
         {isSaving && (
           <ThemedView style={[styles.card, { backgroundColor: '#e8f5e8', borderColor: '#4CAF50', borderWidth: 1 }]}>
             <ThemedText style={{ color: '#2E7D32', textAlign: 'center' }}>
-              <MaterialIcons name="save" size={16} color="#2E7D32" /> Guardando configuraciones...
+              Guardando configuraciones...
             </ThemedText>
           </ThemedView>
         )}
@@ -238,52 +237,6 @@ export default function SystemSettingsScreen({ onBack }: SystemSettingsScreenPro
           <SystemConfigSection settings={settings} onUpdate={handleUpdateSettings} />
         )}
 
-        {/* Acciones de Sistema */}
-        <ThemedView style={styles.card}>
-          <ThemedText style={styles.sectionTitle}>
-            <MaterialIcons name="build" size={18} color="#333" /> Gestión de Configuración
-          </ThemedText>
-          
-          <TouchableOpacity style={styles.button} onPress={handleExportSettings}>
-            <ThemedText style={styles.buttonText}>
-              <MaterialIcons name="file-download" size={16} color="#fff" /> Exportar Configuración
-            </ThemedText>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={[styles.button, styles.buttonSecondary]} onPress={handleImportSettings}>
-            <ThemedText style={styles.buttonText}>
-              <MaterialIcons name="file-upload" size={16} color="#fff" /> Importar Configuración
-            </ThemedText>
-          </TouchableOpacity>
-
-        </ThemedView>
-
-        {/* Información del Sistema - DATOS REALES */}
-        <ThemedView style={styles.card}>
-          <ThemedText style={styles.sectionTitle}>Información del Sistema</ThemedText>
-          <View style={{ gap: 8 }}>
-            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-              <ThemedText style={{ color: "#666" }}>Versión de la App:</ThemedText>
-              <ThemedText style={{ fontWeight: "600" }}>1.0.0</ThemedText>
-            </View>
-            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-              <ThemedText style={{ color: "#666" }}>Última Actualización:</ThemedText>
-              <ThemedText style={{ fontWeight: "600" }}>
-                {new Date().toLocaleDateString('es-PE')}
-              </ThemedText>
-            </View>
-            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-              <ThemedText style={{ color: "#666" }}>Espacios Configurados:</ThemedText>
-              <ThemedText style={{ fontWeight: "600" }}>{settings.businessInfo.maxSpots}</ThemedText>
-            </View>
-            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-              <ThemedText style={{ color: "#666" }}>Idioma:</ThemedText>
-              <ThemedText style={{ fontWeight: "600" }}>
-                {settings.systemConfig.language === 'es' ? 'Español' : 'English'}
-              </ThemedText>
-            </View>
-          </View>
-        </ThemedView>
       </ScrollView>
     </ThemedView>
   );

@@ -1,4 +1,3 @@
-// src/components/PlateCamera.tsx
 import React, { use, useEffect, useRef, useState } from 'react';
 import {
   View,
@@ -15,7 +14,6 @@ import {
   useCameraDevice,
   useCameraPermission
 } from 'react-native-vision-camera';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 
 interface PlateCameraProps {
   visible: boolean;
@@ -38,6 +36,23 @@ export default function PlateCamera({ visible, onCapture, onClose }: PlateCamera
   const [isCapturing, setIsCapturing] = useState(false);
   const [flashMode, setFlashMode] = useState<'off' | 'on' | 'auto'>('off');
   const [focusPoint, setFocusPoint] = useState<{ x: number; y: number } | null>(null);
+
+  // marco guia para placas
+  const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
+  const GUIDE_WIDTH = screenWidth * 0.8;
+  const GUIDE_HEIGHT = GUIDE_WIDTH * 0.45;
+
+  const getGuideFrameCoordinates = () => {
+  const guideX = (screenWidth - GUIDE_WIDTH) / 2;
+  const guideY = (screenHeight - GUIDE_HEIGHT) / 2 - 120; // Ajustar según layout
+  
+  return {
+    x: guideX,
+    y: guideY,
+    width: GUIDE_WIDTH,
+    height: GUIDE_HEIGHT,
+  };
+};
 
   // Solicitar permisos de cámara
   useEffect(() => {
@@ -78,14 +93,14 @@ export default function PlateCamera({ visible, onCapture, onClose }: PlateCamera
       const photo = await camera.current.takePhoto({
         flash: flashMode,
         enableAutoRedEyeReduction: true,
-        // enableAutoStabilization: true,
       });
 
       console.log('✅ Imagen capturada:', photo.path);
 
-      // Procesar imagen para extraer solo el área del marco
+      // ✅ USAR: processImageCrop mejorado
       const processedImageUri = await processImageCrop(photo.path);
       
+      console.log('✅ Imagen procesada para OCR:', processedImageUri);
       onCapture(processedImageUri);
 
     } catch (error) {
@@ -99,12 +114,55 @@ export default function PlateCamera({ visible, onCapture, onClose }: PlateCamera
   // Procesar imagen para extraer solo el área del marco guía
   const processImageCrop = async (imagePath: string): Promise<string> => {
     try {
-      // En una implementación real, aquí usarías react-native-image-manipulator
-      // para hacer crop del área específica del marco
+      console.log('✂️ Iniciando crop del área de la placa...');
+      const PhotoManipulator = require('react-native-photo-manipulator').default;
+      const { MimeType } = require('react-native-photo-manipulator');
+
+      const { Image } = require('react-native');
+      const imageSize = await new Promise<{width: number, height: number}>((resolve, reject) => {
+        Image.getSize(
+          imagePath,
+          (width: number, height: number) => resolve({ width, height }),
+          reject
+        );
+      });
+
+      console.log(`📐 Imagen original: ${imageSize.width}x${imageSize.height}`);
+
+      const frameCoords = getGuideFrameCoordinates();
+    
+      // Convertir coordenadas de pantalla a coordenadas de imagen
+      const scaleX = imageSize.width / screenWidth;
+      const scaleY = imageSize.height / screenHeight;
       
-      // Por ahora retornamos la imagen completa
-      // TODO: Implementar crop basado en las coordenadas del marco
-      return `file://${imagePath}`;
+      const cropRegion = {
+        x: Math.round(frameCoords.x * scaleX),
+        y: Math.round(frameCoords.y * scaleY),
+        width: Math.round(frameCoords.width * scaleX),
+        height: Math.round(frameCoords.height * scaleY),
+      };
+
+      console.log('📍 Área de crop calculada:', cropRegion);
+
+      const validatedCrop = {
+        x: Math.max(0, Math.min(cropRegion.x, imageSize.width - 100)),
+        y: Math.max(0, Math.min(cropRegion.y, imageSize.height - 50)),
+        width: Math.min(cropRegion.width, imageSize.width - cropRegion.x),
+        height: Math.min(cropRegion.height, imageSize.height - cropRegion.y),
+      };
+
+      const croppedImageUri = await PhotoManipulator.batch(
+        imagePath,
+        [], // No operations, solo crop
+        validatedCrop, // Crop region
+        { width: 800, height: 360 }, // Target size (proporcional a placa)
+        90, // Quality
+        MimeType.JPEG
+      );
+    
+      console.log('✅ Imagen croppeada exitosamente:', croppedImageUri);
+      return croppedImageUri;
+      // return `file://${imagePath}`;
       
     } catch (error) {
       console.warn('⚠️ Error procesando imagen, usando original');
@@ -147,13 +205,6 @@ export default function PlateCamera({ visible, onCapture, onClose }: PlateCamera
   });
 };
 
-  const getFlashIcon = () => {
-    switch (flashMode) {
-      case 'on': return 'flash-on';
-      case 'off': return 'flash-off';
-      default: return 'flash-auto';
-    }
-  };
 
   if (!visible) return null;
 
@@ -171,7 +222,6 @@ export default function PlateCamera({ visible, onCapture, onClose }: PlateCamera
   if (hasPermission === false) {
     return (
       <View style={styles.permissionContainer}>
-        <Icon name="camera-off" size={64} color="#f44336" />
         <Text style={styles.permissionText}>Sin acceso a la cámara</Text>
         <TouchableOpacity style={styles.permissionButton} onPress={requestCameraPermission}>
           <Text style={styles.permissionButtonText}>Solicitar Permisos</Text>
@@ -187,7 +237,6 @@ export default function PlateCamera({ visible, onCapture, onClose }: PlateCamera
   if (!device) {
     return (
       <View style={styles.errorContainer}>
-        <Icon name="error" size={64} color="#f44336" />
         <Text style={styles.errorText}>No se encontró cámara trasera</Text>
         <TouchableOpacity style={styles.closeButton} onPress={onClose}>
           <Text style={styles.closeButtonText}>Cerrar</Text>
@@ -271,7 +320,7 @@ export default function PlateCamera({ visible, onCapture, onClose }: PlateCamera
       {/* Controles superiores */}
       <View style={styles.topControls}>
         <TouchableOpacity style={styles.controlButton} onPress={onClose}>
-          <Icon name="close" size={24} color="#fff" />
+          <Text style={{ fontSize: 15}}> ❌ </Text>
         </TouchableOpacity>
         
         <View style={styles.centerControls}>
@@ -279,7 +328,7 @@ export default function PlateCamera({ visible, onCapture, onClose }: PlateCamera
         </View>
         
         <TouchableOpacity style={styles.controlButton} onPress={toggleFlash}>
-          <Icon name={getFlashIcon()} size={24} color="#fff" />
+          <Text style={{ fontSize: 15}}> 🔦 </Text>
         </TouchableOpacity>
       </View>
 

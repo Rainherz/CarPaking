@@ -1,8 +1,7 @@
 import React from "react";
-import { ScrollView, TouchableOpacity } from "react-native";
+import { ScrollView, Text, TouchableOpacity } from "react-native";
 import { ThemedView } from "../common/ThemedView";
 import { ThemedText } from "../common/ThemedText";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { adminStyles as styles } from "../../styles/AdminScreen.styles";
 
 export default function AdminActiveVehicles({
@@ -22,7 +21,7 @@ export default function AdminActiveVehicles({
       <ScrollView style={{ maxHeight: 300 }}>
         {vehicles.length === 0 ? (
           <ThemedView style={styles.emptyState}>
-            <MaterialIcons name="directions-car" size={48} color="#ccc" />
+            <Text style={{ fontSize: 30}}>🚗</Text>
             <ThemedText style={styles.emptyText}>No hay vehículos activos</ThemedText>
           </ThemedView>
         ) : (
@@ -41,7 +40,6 @@ export default function AdminActiveVehicles({
                 style={{ padding: 8 }} 
                 onPress={() => onViewDetails(vehicle)}
               >
-                <MaterialIcons name="visibility" size={20} color="#666" />
               </TouchableOpacity>
             </ThemedView>
           ))

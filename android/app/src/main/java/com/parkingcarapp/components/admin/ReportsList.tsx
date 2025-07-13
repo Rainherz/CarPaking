@@ -1,8 +1,7 @@
 import React from "react";
-import { ScrollView, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { ThemedView } from "../common/ThemedView";
 import { ThemedText } from "../common/ThemedText";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { adminSharedStyles as styles } from "../../styles/AdminShared.styles";
 
 type ReportsListProps = {
@@ -53,7 +52,7 @@ export default function ReportsList({ reports, onExportData, isLoading }: Report
         
         <TouchableOpacity style={styles.button} onPress={onExportData}>
           <ThemedText style={styles.buttonText}>
-            <MaterialIcons name="file-download" size={16} color="#fff" /> Exportar Datos
+            <Text style={{ fontSize: 16 }}> 📥 </Text> Exportar Datos
           </ThemedText>
         </TouchableOpacity>
       </ThemedView>
@@ -66,12 +65,12 @@ export default function ReportsList({ reports, onExportData, isLoading }: Report
 
         {isLoading ? (
           <ThemedView style={styles.emptyState}>
-            <MaterialIcons name="hourglass-empty" size={48} color="#ccc" />
+            {/* <MaterialIcons name="hourglass-empty" size={48} color="#ccc" /> */}
             <ThemedText style={styles.emptyText}>Cargando reportes...</ThemedText>
           </ThemedView>
         ) : reports.length === 0 ? (
           <ThemedView style={styles.emptyState}>
-            <MaterialIcons name="receipt" size={48} color="#ccc" />
+            {/* <MaterialIcons name="receipt" size={48} color="#ccc" /> */}
             <ThemedText style={styles.emptyText}>
               No se encontraron registros para los filtros seleccionados
             </ThemedText>

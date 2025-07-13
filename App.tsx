@@ -350,15 +350,6 @@ export default function App() {
         translucent={false}
       />
       
-      {/* Indicador de conectividad en la app */}
-      {isOfflineMode && appState === 'ready' && (
-        <View style={styles.connectivityBanner}>
-          <Text style={styles.connectivityText}>
-            📱 Trabajando sin conexión - Los datos se sincronizarán automáticamente
-          </Text>
-        </View>
-      )}
-      
       <Animated.View style={[styles.contentContainer, { opacity: fadeAnim }]}>
         {content}
       </Animated.View>

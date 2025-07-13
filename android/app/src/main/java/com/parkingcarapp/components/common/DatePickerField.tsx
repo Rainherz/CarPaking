@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { TouchableOpacity, Modal, View, Text } from 'react-native';
 import CalendarPicker from 'react-native-calendar-picker';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+// import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 interface DatePickerFieldProps {
   label: string;
@@ -74,7 +74,8 @@ export default function DatePickerField({
           }}>
             {formatDisplayDate(value)}
           </Text>
-          <MaterialIcons name="calendar-today" size={20} color="#666" />
+          {/* <MaterialIcons name="calendar-today" size={20} color="#666" /> */}
+
         </TouchableOpacity>
         
         {value && (
@@ -86,7 +87,7 @@ export default function DatePickerField({
             }}
             onPress={() => onDateChange('')}
           >
-            <MaterialIcons name="clear" size={20} color="#666" />
+            {/* <MaterialIcons name="clear" size={20} color="#666" /> */}
           </TouchableOpacity>
         )}
       </View>
@@ -128,7 +129,7 @@ export default function DatePickerField({
                 onPress={() => setShowCalendar(false)}
                 style={{ padding: 4 }}
               >
-                <MaterialIcons name="close" size={24} color="#666" />
+                {/* <MaterialIcons name="close" size={24} color="#666" /> */}
               </TouchableOpacity>
             </View>
 

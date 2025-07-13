@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { View, TextInput, TouchableOpacity, Switch, Alert } from "react-native";
 import { ThemedView } from "../common/ThemedView";
 import { ThemedText } from "../common/ThemedText";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { adminSharedStyles as styles } from "../../styles/AdminShared.styles";
 
 // Componente para configuración de tarifas

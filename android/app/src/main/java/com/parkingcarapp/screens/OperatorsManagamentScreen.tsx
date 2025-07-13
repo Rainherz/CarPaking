@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { ScrollView, TouchableOpacity, Alert, View } from "react-native";
+import { ScrollView, TouchableOpacity, Alert, View, Text } from "react-native";
 import { ThemedView } from "../components/common/ThemedView";
 import { ThemedText } from "../components/common/ThemedText";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import AdminScreenHeader from "../components/admin/AdminScreenHeader";
 import OperatorsList from "../components/admin/OperatorsList";
 import OperatorFormModal from "../components/admin/OperatorFormModal";
@@ -139,7 +138,6 @@ export default function OperatorsManagementScreen({ onBack }: OperatorsManagemen
       `🚗 Vehículos procesados: ${operator.totalVehiclesProcessed}\n` +
       `💰 Ingresos generados: S/ ${operator.totalEarnings.toFixed(2)}\n` +
       `🔄 Estado: ${operator.isActive ? "Activo" : "Inactivo"}\n` +
-      `⏰ Último acceso: ${operator.lastLogin || "Nunca"}`,
       [{ text: "Cerrar" }]
     );
   };
@@ -157,8 +155,8 @@ export default function OperatorsManagementScreen({ onBack }: OperatorsManagemen
           onBack={onBack}
         />
         <ThemedView style={[styles.card, { margin: 16, alignItems: 'center', paddingVertical: 40 }]}>
-          <MaterialIcons name="hourglass-empty" size={48} color="#ccc" />
-          <ThemedText style={{ color: '#999', marginTop: 12 }}>Cargando operadores...</ThemedText>
+          <Text style={{ fontSize: 15 }}>Cargando operadores...</Text>
+          <ThemedText style={{ color: '#999', marginTop: 12 }}>🔃</ThemedText>
         </ThemedView>
       </ThemedView>
     );
@@ -178,7 +176,7 @@ export default function OperatorsManagementScreen({ onBack }: OperatorsManagemen
         {/* 🔧 ESTADÍSTICAS MEJORADAS */}
         <ThemedView style={styles.card}>
           <ThemedText style={styles.sectionTitle}>
-            <MaterialIcons name="people" size={18} color="#333" /> Resumen de Operadores
+             Resumen de Operadores
           </ThemedText>
           <View style={{ flexDirection: "row", justifyContent: "space-around", marginBottom: 16 }}>
             <View style={{ alignItems: "center" }}>
@@ -203,7 +201,7 @@ export default function OperatorsManagementScreen({ onBack }: OperatorsManagemen
 
           <TouchableOpacity style={styles.button} onPress={handleAddOperator}>
             <ThemedText style={styles.buttonText}>
-              <MaterialIcons name="person-add" size={16} color="#fff" /> Agregar Nuevo Operador
+              Agregar Nuevo Operador
             </ThemedText>
           </TouchableOpacity>
         </ThemedView>

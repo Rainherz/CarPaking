@@ -16,7 +16,6 @@ import { ocrService } from '../services/ocrService';
 import PlateCamera from './PlateCamera';
 import { ThemedView } from './common/ThemedView';
 import { ThemedText } from './common/ThemedText';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 interface PlateDetectorProps {
   visible: boolean;
@@ -52,40 +51,40 @@ export default function PlateDetector({ visible, onClose, onSuccess, currentUser
 
   // Nueva función para manejar captura desde PlateCamera
   const handleCameraCapture = async (imageUri: string) => {
-    try {
-      setImageUri(imageUri);
-      setStep('processing');
-      setIsProcessing(true);
+  try {
+    setImageUri(imageUri);
+    setStep('processing');
+    setIsProcessing(true);
 
-      console.log('🔍 Iniciando OCR con imagen capturada...');
+    console.log('🔍 Iniciando OCR optimizado para imagen croppeada...');
 
-      // Procesar con OCR
-      const ocrResult = await ocrService.detectPlate(imageUri);
-      
-      if (ocrResult.success && ocrResult.plateNumber) {
-        console.log('✅ Placa detectada:', ocrResult.plateNumber);
-        setDetectedPlate(ocrResult.plateNumber);
-        setConfidence(ocrResult.confidence);
-        setManualPlate(ocrResult.plateNumber);
-        setStep('confirm');
-      } else {
-        console.log('⚠️ No se detectó placa, mostrando confirmación manual');
-        setStep('confirm');
-        Alert.alert(
-          'No se detectó placa',
-          'No se pudo detectar una placa automáticamente. Puedes ingresarla manualmente.',
-          [{ text: 'OK' }]
-        );
-      }
-      
-    } catch (error) {
-      console.error('❌ Error procesando imagen:', error);
-      Alert.alert('Error', 'No se pudo procesar la imagen');
-      setStep('camera');
-    } finally {
-      setIsProcessing(false);
+    // ✅ USAR: función específica para imágenes croppeadas
+    const ocrResult = await ocrService.detectPlateFromCroppedImage(imageUri);
+    
+    if (ocrResult.success && ocrResult.plateNumber) {
+      console.log('✅ Placa detectada en imagen croppeada:', ocrResult.plateNumber);
+      setDetectedPlate(ocrResult.plateNumber);
+      setConfidence(ocrResult.confidence);
+      setManualPlate(ocrResult.plateNumber);
+      setStep('confirm');
+    } else {
+      console.log('⚠️ No se detectó placa en imagen croppeada, mostrando entrada manual');
+      setStep('confirm');
+      Alert.alert(
+        'Área analizada',
+        'No se detectó una placa en el área seleccionada. Puedes ingresarla manualmente.',
+        [{ text: 'OK' }]
+      );
     }
-  };
+    
+  } catch (error) {
+    console.error('❌ Error procesando imagen croppeada:', error);
+    Alert.alert('Error', 'No se pudo procesar el área de la imagen');
+    setStep('camera');
+  } finally {
+    setIsProcessing(false);
+  }
+};
 
   // Confirmar y registrar entrada
   const handleConfirmEntry = async () => {
@@ -194,7 +193,7 @@ export default function PlateDetector({ visible, onClose, onSuccess, currentUser
                 Procesando Imagen
               </ThemedText>
               <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-                <MaterialIcons name="close" size={24} color="#666" />
+                <Text style={{ fontSize: 15 }}> ❌ </Text>
               </TouchableOpacity>
             </ThemedView>
 
@@ -224,7 +223,7 @@ export default function PlateDetector({ visible, onClose, onSuccess, currentUser
                 Confirmar Entrada
               </ThemedText>
               <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-                <MaterialIcons name="close" size={24} color="#666" />
+                <Text style={{ fontSize: 15 }}> ❌ </Text>
               </TouchableOpacity>
             </ThemedView>
 
@@ -235,7 +234,7 @@ export default function PlateDetector({ visible, onClose, onSuccess, currentUser
 
               {detectedPlate && (
                 <ThemedView style={styles.detectionResult}>
-                  <MaterialIcons name="check-circle" size={24} color="#4CAF50" />
+                  <Text style={{ fontSize: 20 }}>✅</Text>
                   <ThemedText style={styles.detectedText}>
                     Placa detectada: {detectedPlate}
                   </ThemedText>
@@ -269,9 +268,8 @@ export default function PlateDetector({ visible, onClose, onSuccess, currentUser
                   {isProcessing ? (
                     <ActivityIndicator color="#fff" />
                   ) : (
-                    <MaterialIcons name="check" size={24} color="#fff" />
+                    <Text style={styles.buttonText}>Registrar Entrada</Text>
                   )}
-                  <Text style={styles.buttonText}>Registrar Entrada</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -279,7 +277,6 @@ export default function PlateDetector({ visible, onClose, onSuccess, currentUser
                   onPress={() => setStep('camera')}
                   disabled={isProcessing}
                 >
-                  <MaterialIcons name="camera-alt" size={24} color="#666" />
                   <Text style={[styles.buttonText, { color: '#666' }]}>Tomar Otra Foto</Text>
                 </TouchableOpacity>
               </ThemedView>

@@ -1,8 +1,7 @@
 import React from "react";
-import { ScrollView, TouchableOpacity } from "react-native";
+import { ScrollView, Text, TouchableOpacity } from "react-native";
 import { ThemedView } from "../common/ThemedView";
 import { ThemedText } from "../common/ThemedText";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { operatorStyles as styles } from "../../styles/OperatorScreen.styles";
 
 export default function OperatorActiveVehicles({
@@ -22,7 +21,7 @@ export default function OperatorActiveVehicles({
       <ScrollView>
         {vehicles.length === 0 ? (
           <ThemedView style={styles.emptyState}>
-            <MaterialIcons name="directions-car" size={48} color="#ccc" />
+            <Text style={{ fontSize: 30 }}>🚗</Text>
             <ThemedText style={styles.emptyText}>No hay vehículos activos</ThemedText>
           </ThemedView>
         ) : (
@@ -38,7 +37,7 @@ export default function OperatorActiveVehicles({
                 </ThemedView>
               </ThemedView>
               <TouchableOpacity style={styles.exitVehicleButton} onPress={() => onExit(vehicle.plateNumber)}>
-                <MaterialIcons name="arrow-forward" size={20} color="#fff" />
+                <Text style={{ fontSize: 10 }}> ❌ </Text>
               </TouchableOpacity>
             </ThemedView>
           ))

@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, Text } from "react-native";
 import { ThemedView } from "../common/ThemedView";
 import { ThemedText } from "../common/ThemedText";
 import DatePickerField from "../common/DatePickerField"; 
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { adminSharedStyles as styles } from "../../styles/AdminShared.styles";
 
 type ReportsFiltersProps = {
@@ -47,12 +46,12 @@ export default function ReportsFilters({ onFilterChange, operators }: ReportsFil
   return (
     <ThemedView style={styles.filterContainer}>
       <ThemedText style={styles.sectionTitle}>
-        <MaterialIcons name="filter-list" size={18} color="#333" /> Filtros de Reporte
+        <Text style={{fontSize: 16, fontWeight: '600', color: '#333'}}>Filtros de Reporte</Text>
       </ThemedText>
       
       {/* Selector de Operador */}
       <View style={{ marginBottom: 16 }}>
-        <ThemedText style={{ fontWeight: '600', marginBottom: 8, color: '#333' }}>Operador:</ThemedText>
+        <Text style={{ fontSize: 14, marginBottom: 8 }}>Operador:</Text>
         <TouchableOpacity 
           style={[styles.filterInput, { 
             flexDirection: 'row', 
@@ -62,11 +61,10 @@ export default function ReportsFilters({ onFilterChange, operators }: ReportsFil
           onPress={() => setShowOperatorPicker(!showOperatorPicker)}
         >
           <ThemedText style={{ flex: 1 }}>{selectedOperatorName}</ThemedText>
-          <MaterialIcons 
-            name={showOperatorPicker ? "keyboard-arrow-up" : "keyboard-arrow-down"} 
-            size={20} 
-            color="#666" 
-          />
+          <Text style={{ fontSize: 16, color: '#666' }}>
+            {showOperatorPicker ? "▲" : "▼"}
+          </Text>
+          
         </TouchableOpacity>
       </View>
 
@@ -95,7 +93,7 @@ export default function ReportsFilters({ onFilterChange, operators }: ReportsFil
                 {operator.name}
               </ThemedText>
               {selectedOperator === operator.id && (
-                <MaterialIcons name="check-circle" size={20} color="#2E7D32" />
+                <Text style={{ fontSize: 12 }}> ✅</Text>
               )}
             </TouchableOpacity>
           ))}
@@ -105,7 +103,7 @@ export default function ReportsFilters({ onFilterChange, operators }: ReportsFil
       {/* ⬇️ CAMPOS DE FECHA CON DatePickerField mejorado */}
       <View style={{ marginBottom: 16 }}>
         <DatePickerField
-          label="📅 Fecha Desde"
+          label="Fecha Desde"
           value={startDate}
           onDateChange={setStartDate}
           placeholder="Seleccionar fecha inicial"
@@ -114,7 +112,7 @@ export default function ReportsFilters({ onFilterChange, operators }: ReportsFil
 
       <View style={{ marginBottom: 20 }}>
         <DatePickerField
-          label="📅 Fecha Hasta"
+          label="Fecha Hasta"
           value={endDate}
           onDateChange={setEndDate}
           placeholder="Seleccionar fecha final"
@@ -134,7 +132,7 @@ export default function ReportsFilters({ onFilterChange, operators }: ReportsFil
           }]} 
           onPress={applyFilters}
         >
-          <MaterialIcons name="search" size={16} color="#fff" />
+          <Text style={{ fontSize: 16 }}> 🔍 </Text>
           <ThemedText style={styles.buttonText}>Aplicar Filtros</ThemedText>
         </TouchableOpacity>
         
@@ -148,7 +146,7 @@ export default function ReportsFilters({ onFilterChange, operators }: ReportsFil
           }]} 
           onPress={clearFilters}
         >
-          <MaterialIcons name="clear" size={16} color="#fff" />
+          <Text style={{ fontSize: 16 }}> 🧹 </Text>
           <ThemedText style={styles.buttonText}>Limpiar</ThemedText>
         </TouchableOpacity>
       </View>

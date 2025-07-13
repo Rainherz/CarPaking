@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Modal, View, TextInput, TouchableOpacity, Alert, ScrollView } from "react-native";
+import { Modal, View, TextInput, TouchableOpacity, Alert, ScrollView, Text } from "react-native";
 import { ThemedView } from "../common/ThemedView";
 import { ThemedText } from "../common/ThemedText";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { adminSharedStyles as styles } from "../../styles/AdminShared.styles";
 
 type Operator = {
@@ -133,9 +132,6 @@ export default function OperatorFormModal({
     <Modal visible={visible} animationType="slide" presentationStyle="pageSheet">
       <ThemedView style={styles.container}>
         <ThemedView style={styles.header}>
-          <TouchableOpacity style={styles.backButton} onPress={confirmCancel}>
-            <MaterialIcons name="close" size={24} color="#2E7D32" />
-          </TouchableOpacity>
           <ThemedView style={styles.headerTextContainer}>
             <ThemedText style={styles.headerTitle}>
               {operator ? "Editar Operador" : "Nuevo Operador"}
@@ -144,8 +140,8 @@ export default function OperatorFormModal({
               {operator ? "Modificar información del operador" : "Registrar nuevo operador"}
             </ThemedText>
           </ThemedView>
-          <TouchableOpacity onPress={handleSave}>
-            <MaterialIcons name="check" size={24} color="#2E7D32" />
+          <TouchableOpacity style={styles.backButton} onPress={confirmCancel}>
+            <Text style={{ fontSize: 15, color: "black" }}> ❌ </Text>
           </TouchableOpacity>
         </ThemedView>
 
